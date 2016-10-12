@@ -35,10 +35,19 @@ The app has two methods of communication with the Joule bluetooth and internet. 
 
 ### App Bluetooth Communication
 The protocol does seem to be somewhat binary, it might be jsonp but have not figured out the proper decoding yet. Android easily supports enabling bluetooth HCI packet logging under developer settings (wireshark can then be used to open the log file).
-Internet Communication
 
 ### App Internet Communication
-Using a mitm proxy like Fiddler (which also supports web sockets) with the proper root cert installed it is possible to capture and monitor the Joule's traffic (http://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForAndroid covers basic setup).  The chefsteps API (base url: https://www.chefsteps.com/api/v0/) uses REST/JSON/POST actions paired with a websocket for communication.  Unfortunately it *looks* like signaling (temperature control, etc) happens over the web socket.  Further the web socket seems to use a binary protocol (at least not straight ascii but maybe jsonp) and is somewhat chatty (probably constant temperature readings).  The REST api uses several hashes and a basic auth block.  Most of the json posts include a huge wealth of un-necessary information on every request (We have not tested to see if requests are rejected without all this excess information).   We are not sure how needed it will be to catalog many of the REST calls, as we believe most control is through the socket.  The app also fetches more static resources from amazon cloudfront (ie https://d1azuiz827qxpe.cloudfront.net) and there may be a test resource location of http://api.jouleapp.com.
+Using a mitm proxy like Fiddler (which also supports web sockets) with the proper root cert installed it is possible to capture and monitor the Joule's traffic (http://docs.telerik.com/fiddler/Configure-Fiddler/Tasks/ConfigureForAndroid covers basic setup).  The chefsteps API (base url: https://www.chefsteps.com/api/v0/) uses REST/JSON/POST actions paired with a websocket for communication.  Unfortunately it *looks* like signaling (temperature control, etc) happens over the web socket.  Further the web socket seems to use a binary protocol (at least not straight ascii but maybe jsonp) and is somewhat chatty (probably constant temperature readings).  The REST api uses several hashes and a basic auth block, along with sequence numbers (maybe for duplication checking).  Most of the json posts include a huge wealth of un-necessary information on every request (We have not tested to see if requests are rejected without all this excess information).   We are not sure how needed it will be to catalog many of the REST calls, as we believe most control is through the socket.  The app also fetches more static resources from amazon cloudfront (ie https://d1azuiz827qxpe.cloudfront.net) and there may be a test resource location of http://api.jouleapp.com.
+
+### Firmware Programs
+The Joule essentially has the idea of a 'program' it currently runs.  Programs cannot be changed so when the app goes to update the program really its stopping the current program and starting a new one (this is why you can sometimes hear the circulator stop).  In theory a program has the following properties:
+-    @param {float} setPoint - The temperature where the cooking will be done
+-    @param {int} cookTime - Time (in seconds) to perform the cook
+-    @param {int} delayedStart - Time (in seconds) to wait before heating the water bath.
+-    @param {float} holdingTemperature - The temperature to drop the bath down to after the cookTime
+-    It also takes other args like is it a manual/automatic program, and metadata that has guide/program id information. We are guessing the metadata is not used by Joule itself for anything.
+You can see the message construction in assets/www/js/bundle.js (search for makeMessage)
+There are other parameters like turbo (allows overshooting for faster getting to temperature) or waitForPreheat, but we don't actually see these used anywhere in code (maybe future plans).  It could be somehow just serialized but that seems unlikely.
 
 
 

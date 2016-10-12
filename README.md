@@ -2,7 +2,7 @@ JouleUWP - Unofficial Windows 10 UWP App (phone, desktop, hololens, xbox) for Ch
 =================================
 NOTE!
 -----
-Unfortunately the API seems more complicated with most.  There is no direct TCP traffic with joule only through a chefsteps server and the API is not simple (it seems like most functional changes are over web sockets). See [Joule Protocol Documentation](JOULE_PROTOCOL.md) for more details and help is very welcome!  Right now there has not been success in 3rd party api access.
+Unfortunately the API seems more complicated than most.  There is no direct TCP traffic with joule only through a chefsteps server and the API is not simple (it seems like most functional changes are over web sockets). See [Joule Protocol Documentation](JOULE_PROTOCOL.md) for more details and help is very welcome!  Right now there has not been success in 3rd party api access.
 
 OVERVIEW
 -----
