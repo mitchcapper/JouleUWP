@@ -2,7 +2,7 @@ JouleUWP - Unofficial Windows 10 UWP App (phone, desktop, hololens, xbox) for Ch
 =================================
 NOTE!
 -----
-Unfortunately the API seems more complicated with most.  There is no direct TCP traffic with joule only through a chefsteps server and the API is not simple (it seems like most functional changes are over web sockets). See the [Protocol Notes](#protocol-notes) for more details.  Right now there has not been success in 3rd party api access.
+Unfortunately the API seems more complicated with most.  There is no direct TCP traffic with joule only through a chefsteps server and the API is not simple (it seems like most functional changes are over web sockets). See [Joule Protocol Documentation](JOULE_PROTOCOL.md) for more details and help is very welcome!  Right now there has not been success in 3rd party api access.
 
 OVERVIEW
 -----
@@ -53,7 +53,7 @@ Development
 
 ### Compiling
 Install https://www.sqlite.org/2016/sqlite-uwp-3130000.vsix its required in addition to the nuget packages.
-Clone the source open the solution file.  It should restore all the nuget packages on first compile, and for the other reference binaries they are in the lib_bins folder so should just work.  Debugging symbols are included for all the lib_bins but if you want the actual source let me know. In theory the helper libs probably won't change too much.
+Clone the source open the solution file.  It should restore all the nuget packages on first compile.
 
 
 ### Code Formatting
@@ -89,12 +89,7 @@ Create issues / feature requests in github's issues.  Its an easy way to track w
 The main guide is at: https://msdn.microsoft.com/windows/uwp/xbox-apps/getting-started while you need to join windows insider to download the latest windows SDK (build 14295 or newer) you do not need to run an insider build of windows on your PC (so normal Win10 will work).  There is additional documentation at: https://msdn.microsoft.com/windows/uwp/xbox-apps/index .
 
 ### Protocol Notes
-The joule device can be communicated with over bluetooth directly from a mobile device, or through the API that bounces through chefsteps.com. The joule itself maintains a connection directly over https with an AWS heroku instance for chefsteps (ie ec2-54-225-183-177.compute-1.amazonaws.com).   There does not seem to be direct wifi/tcp connection between devices and the joule.   The chefsteps API (base url: https://www.chefsteps.com/api/v0/) uses REST/JSON/POST actions paired with a websocket for communication.  Unfortunately it *looks* like signaling (temperature control, etc) happens over the web socket.  Further the web socket seems to use a binary protocol (at least not straight ascii) and is somewhat chatty (probably constant temperature readings).  The REST api uses several hashes and a basic auth block.  Most of the json posts include a huge wealth of un-necessary information on every request.   I am not sure how needed it will be to catalog many of the REST calls, as I believe most control is through the socket.
-
-Most of the initial data has been gathered through android app inspection and proxying the connection (Fiddler supports web sockets for one).  Unfortunately it does not seem like a simple API to work with.   Inspecting the bluetooth HCI packets in wireshark seems again to be a binary protocol.
-
-The best method to proceeding will probably be through app source inspection rather than protocol snooping.
-
+Please see [Joule Protocol Documentation](JOULE_PROTOCOL.md)
 
 
 ### Code Function Notes
