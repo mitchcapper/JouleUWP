@@ -29,7 +29,7 @@ Table of Contents
 
 Description
 ------------
-Joule is a Sous-vide cooking device.  The official app has a lot of features: bluetooth pairing, setting temperature on the device, cook time, device status, control the wifi network it is connected to, and various recipe walkthroughs.  This unofficial app will concentrate first on core features and expand from there.
+Joule is a Sous-vide cooking device.  The official app has a lot of features: bluetooth pairing, setting temperature on the device, cook time, device status, control the wifi network it is connected to, and various recipe walkthroughs.  This unofficial app will concentrate first on core features and expand from there.  From the ground up it will be built for supporting multiple joules at once, something the native app currently does not support.
 
 ### Screenshot
 Coming soon..

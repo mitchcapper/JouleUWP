@@ -2,6 +2,8 @@ Joule Protocol, interfacing, reverse engineering, and API documentation
 =================================
 The goal is to establish open documentation of the Joule protocol and interfaces so 3rd parties can interact with the Joule.  There could be some security ramifications as the Joule is NOT a local only device (it does take commands from the chefsteps servers).  The Joule itself does not seem to have any publicly exposed ports however, so even if there was a security flaw the chefsteps team could block it relatively easily.  There is little	reason for chefsteps to try and interfere with this process, and previously they had a 'developer signup' which would seem to indicate wanting to support this in the future.   For now it seems ChefSteps is WAY to busy to offer any assistance, documentation, development endpoints or test options (or their development program they had a signup for).  We have reached out a few times without luck.
 
+3rd Party support not only allows for other platforms (ie Windows or Web) but also would allow for other features (automation, controlling multiple joules at once, multiple users able to control a joule via the internet, etc).
+
 The API itself is not a basic REST api as one might hope, and seems fairly complex.  While MITM of the traffic (BT/web) does work, most likely the best reverse engineering will be through source inspection (thankfully most logic seems JS based).
 
 Table of Contents
@@ -12,7 +14,8 @@ Table of Contents
      * [Joule Internet Communication](#joule-internet-communication)
    * [App Communication Modes](#app-communication-modes)
      * [App Bluetooth Communication](#app-bluetooth-communication)
-     * [App Internet Communication](#app-internet-communication)     
+     * [App Internet Communication](#app-internet-communication)
+     * [Firmware Programs](#firmware-programs)
    * [Official App Source](#official-app-source)
    * [App Logging](#app-logging)
 
@@ -31,7 +34,7 @@ The bluetooth connection can be used to connect the device via wifi.  The Joule 
 
 App Communication Modes
 ------------
-The app has two methods of communication with the Joule bluetooth and internet.  We do not believe it is possible to talk directly to the Joule over the wifi/tcp connection. 
+The app has two methods of communication with the Joule bluetooth and internet.  We do not believe it is possible to talk directly to the Joule over the wifi/tcp connection.  The only slightly good news is it looks like messages are built the same way for bluetooth and wifi/tcp so work done to get one working should go towards making the other work as well.
 
 ### App Bluetooth Communication
 The protocol does seem to be somewhat binary, it might be jsonp but have not figured out the proper decoding yet. Android easily supports enabling bluetooth HCI packet logging under developer settings (wireshark can then be used to open the log file).
@@ -47,7 +50,7 @@ The Joule essentially has the idea of a 'program' it currently runs.  Programs c
 -    @param {float} holdingTemperature - The temperature to drop the bath down to after the cookTime
 -    It also takes other args like is it a manual/automatic program, and metadata that has guide/program id information. We are guessing the metadata is not used by Joule itself for anything.
 You can see the message construction in assets/www/js/bundle.js (search for makeMessage)
-There are other parameters like turbo (allows overshooting for faster getting to temperature) or waitForPreheat, but we don't actually see these used anywhere in code (maybe future plans).  It could be somehow just serialized but that seems unlikely.
+There are other parameters like turbo (allows overshooting for faster getting to temperature) or waitForPreheat, but we don't actually see these used anywhere in code (maybe future plans).  It could be somehow just serialized but that seems unlikely.  It is also not clear how useful holding temperature is, given the fact the bath has to naturally cool to reach a lower temperature.
 
 
 
